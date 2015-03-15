@@ -8,14 +8,14 @@ Install
 
 .. code-block:: bash
 
-   $ go get github.com/shibukawa/optstring_parser.go
+   $ go get github.com/shibukawa/optstring_parser
 
 Usage
 ---------
 
 .. code-block:: go
 
-   import "github.com/shibukawa/optstring_parser.go"
+   import "github.com/shibukawa/optstring_parser"
 
    func parse() {
        opts := optstring_parser.Parse(`foo bar baz "hello world"`)
