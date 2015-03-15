@@ -28,7 +28,7 @@ Usage
 Reference
 --------------
 
-`func Parse(src string) []string`
+``func Parse(src string) []string``
 
 Splits src string by space. If the chunk is quoted, the spaces between double-quotations are ignored.
 
