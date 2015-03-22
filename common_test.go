@@ -1,4 +1,4 @@
-package optstring_parser
+package shell
 
 import (
 	. "gopkg.in/check.v1"

@@ -1,4 +1,4 @@
-package optstring_parser
+package shell
 
 import (
 	"unicode"
@@ -14,7 +14,7 @@ const (
 
 /*
 	Splits src string by space. If the chunk is quoted, the spaces between double-quotations are ignored.
- */
+*/
 func Parse(src string) []string {
 	var result []string
 	status := free

@@ -1,36 +1,60 @@
-OptString Parser
-======================
+Shell Style Text Processing
+==================================
 
-Shell-ish string splitter that supports quoted string.
+Shell-ish text processing algorithm collection
+
+* Splitter that supports quoted string.
+* Escape/Unescape string for shell
 
 Install
 ----------
 
 .. code-block:: bash
 
-   $ go get github.com/shibukawa/optstring_parser
+   $ go get github.com/shibukawa/shell
 
-Usage
----------
+Reference
+--------------
+
+Split
+~~~~~~~~~
+
+``func Parse(src string) []string``
+
+Split src string by space. If the chunk is quoted, the spaces between double-quotations are ignored.
 
 .. code-block:: go
 
-   import "github.com/shibukawa/optstring_parser"
+   import "github.com/shibukawa/shell"
 
    func parse() {
-       opts := optstring_parser.Parse(`foo bar baz "hello world"`)
+       opts := shell.Parse(`foo bar baz "hello world"`)
        // opts[0] = "foo"
        // opts[1] = "bar"
        // opts[2] = "baz"
        // opts[3] = "hello world"
    }
 
-Reference
---------------
+Escape
+~~~~~~~~~
 
-``func Parse(src string) []string``
+``func Escape(src string) string``
 
-Splits src string by space. If the chunk is quoted, the spaces between double-quotations are ignored.
+Escape src string.
+
+If src string contains the following characters, it quotes the src and escape some characters:
+
+* ``"`` ``$`` ``@`` ``&`` ``'`` ``(`` ``)`` ``^`` ``|`` ``[`` ``]`` ``{`` ``}`` ``;`` ``*`` ``?`` ``<`` ``>`` ``\``` ``\``
+* White space
+
+It doesn't support escape sequences now.
+
+Unescape
+~~~~~~~~~
+
+``func Unescape(quotedSrc string) string``
+
+It return unescaped string.
 
 License
 ------------
