@@ -10,6 +10,7 @@ const (
 	free statusCode = iota
 	inUnquotedWord
 	inQuotedWord
+	inQuotedWordEscapePrefixed
 )
 
 /*
@@ -24,7 +25,7 @@ func Parse(src string) []string {
 		case free:
 			if !unicode.IsSpace(c) {
 				if c == '"' {
-					currentWordStart = i + 1
+					currentWordStart = i
 					status = inQuotedWord
 				} else {
 					currentWordStart = i
@@ -37,10 +38,14 @@ func Parse(src string) []string {
 				status = free
 			}
 		case inQuotedWord:
-			if c == '"' {
-				result = append(result, src[currentWordStart:i])
+			if c == '\\' {
+				status = inQuotedWordEscapePrefixed
+			} else if c == '"' {
+				result = append(result, Unescape(src[currentWordStart:i+1]))
 				status = free
 			}
+		case inQuotedWordEscapePrefixed:
+			status = inQuotedWord
 		}
 	}
 	if status != free {
