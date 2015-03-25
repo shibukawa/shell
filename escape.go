@@ -26,13 +26,20 @@ var quoteRequiredCharacters map[rune]bool = map[rune]bool{
 	'>':  true,
 	'`':  true,
 	'\\': true,
+	' ':  true,
+	'\t': true,
+	'\r': true,
+	'\n': true,
 }
 
-var escapeRequiredCharacters map[rune]bool = map[rune]bool{
-	'"':  true,
-	'$':  true,
-	'`':  true,
-	'\\': true,
+var escapeRequiredCharacters map[rune]string = map[rune]string{
+	'"':  `\"`,
+	'$':  `\$`,
+	'`':  "\\`",
+	'\\': `\\`,
+	'\t': `\t`,
+	'\r': `\r`,
+	'\n': `\n`,
 }
 
 func Escape(src string) string {
@@ -41,11 +48,15 @@ func Escape(src string) string {
 	for _, ch := range src {
 		if quoteRequiredCharacters[ch] {
 			quoteRequired = true
-			if escapeRequiredCharacters[ch] {
-				buffer.WriteRune('\\')
+			replace, ok := escapeRequiredCharacters[ch]
+			if ok {
+				buffer.WriteString(replace)
+			} else {
+				buffer.WriteRune(ch)
 			}
+		} else {
+			buffer.WriteRune(ch)
 		}
-		buffer.WriteRune(ch)
 	}
 	if quoteRequired {
 		return fmt.Sprintf(`"%s"`, buffer.String())
@@ -63,7 +74,16 @@ func Unescape(src string) string {
 	for i, ch := range src[1:bound] {
 		// skip
 		if escaped {
-			buffer.WriteRune(ch)
+			switch ch {
+			case 't':
+				buffer.WriteByte('\t')
+			case 'r':
+				buffer.WriteByte('\r')
+			case 'n':
+				buffer.WriteByte('\n')
+			default:
+				buffer.WriteRune(ch)
+			}
 			escaped = false
 		} else if ch == '\\' {
 			if i < bound-1 {

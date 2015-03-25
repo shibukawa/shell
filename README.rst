@@ -45,9 +45,8 @@ Escape src string.
 If src string contains the following characters, it quotes the src and escape some characters:
 
 * ``"`` ``$`` ``@`` ``&`` ``'`` ``(`` ``)`` ``^`` ``|`` ``[`` ``]`` ``{`` ``}`` ``;`` ``*`` ``?`` ``<`` ``>`` ``\``` ``\``
+* Escape sequences: ``\r`` ``\n`` ``\t``
 * White space
-
-It doesn't support escape sequences now.
 
 Unescape
 ~~~~~~~~~
